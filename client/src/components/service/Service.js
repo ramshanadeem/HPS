@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Form, Field } from 'react-final-form';
-import { TextField, Checkbox, Radio, Select } from 'final-form-material-ui';
+import { Checkbox, Radio, Select } from 'final-form-material-ui';
 import {
   Typography,
   Paper,
@@ -22,7 +22,24 @@ import {
   MuiPickersUtilsProvider,
   TimePicker,
   DatePicker,
+  KeyboardDatePicker,
 } from '@material-ui/pickers';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+const defaultProps = {
+  bgcolor: 'background.paper',
+  m: 1,
+  style: { width: '5rem', height: '5rem' },
+  borderColor: 'text.primary',
+};
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1),
+      width: '25ch',
+    },
+  },
+}));
 
 function DatePickerWrapper(props) {
   const {
@@ -90,6 +107,34 @@ const validate = values => {
 };
 
 export default function Services() {
+  const classes = useStyles();
+  const [value, setValue] = React.useState('Controlled');
+  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+  const [values, setValues] = React.useState({
+    amount: '',
+    password: '',
+    weight: '',
+    weightRange: '',
+    showPassword: false,
+  });
+
+  /*   const handleChange = (prop) => (event) => {
+      setValues({ ...values, [prop]: event.target.value });
+    };
+   */
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+
   return (
     <div style={{ padding: 16, margin: 'auto' }}>
       <CssBaseline />
@@ -104,49 +149,354 @@ export default function Services() {
           <form onSubmit={handleSubmit} noValidate>
             <Paper style={{ padding: 16 }}>
               <Grid container alignItems="flex-start" spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={2}>
+                  <TextField
+                    id="outlined-uncontrolled"
+                    label="MR#"
+                    defaultValue="0"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={3}>
                   <Field
                     fullWidth
                     required
-                    name="firstName"
+                    name="Token No"
                     component={TextField}
                     type="text"
-                    label="First Name"
+                    label="Token No"
+                    variant="outlined"
                   />
                 </Grid>
-                <Grid item xs={6}>
-                  <Field
-                    fullWidth
-                    required
-                    name="lastName"
-                    component={TextField}
-                    type="text"
-                    label="Last Name"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Field
-                    name="email"
-                    fullWidth
-                    required
-                    component={TextField}
-                    type="email"
-                    label="Email"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    label="Employed"
-                    control={
-                      <Field
-                        name="employed"
-                        component={Checkbox}
-                        type="checkbox"
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <Grid container justify="space-around" item xs={3}>
+
+                    <KeyboardDatePicker
+                      disableToolbar
+                      variant="outlined"
+                      format="MM/dd/yyyy"
+                      margin="normal"
+                      id="date-picker-inline"
+
+                      label="WelfareDate"
+                      value={selectedDate}
+                      onChange={handleDateChange}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                    />
+                  </Grid>
+                </MuiPickersUtilsProvider>
+
+
+
+                <Grid item xs={4}>
+                  <FormControl component="fieldset">
+                    <FormLabel component="legend"></FormLabel>
+                    <FormGroup row>
+
+                      <FormControlLabel
+                        label="IS PAF EMPLOYEE"
+                        control={
+                          <Field
+                            name="IS PAF EMPLOYEE"
+                            component={Checkbox}
+                            type="checkbox"
+                            value="IS PAF EMPLOYEE"
+                          />
+
+                        }
                       />
-                    }
+
+
+                      <FormControlLabel
+                        label="IS STAFF"
+                        control={
+                          <Field
+                            name="IS STAFF"
+                            component={Checkbox}
+                            type="checkbox"
+                            value="IS STAFF"
+                          />
+                        }
+                      />
+
+
+
+
+
+                    </FormGroup>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <h4>Contact</h4>
+                </Grid>
+                <Grid item xs={3}>
+                  <Field
+                    fullWidth
+                    required
+                    name="Profession"
+                    component={TextField}
+                    type="text"
+                    label="Profession"
+                    variant="outlined"
                   />
                 </Grid>
-                <Grid item>
+                <Grid item xs={3}>
+                  <Field
+                    fullWidth
+                    name="Education"
+                    component={Select}
+                    label="Education"
+                    variant="outlined"
+                    formControlProps={{ fullWidth: true }}
+                  >
+                    <MenuItem value="male">male</MenuItem>
+                    <MenuItem value="female">Female</MenuItem>
+                    <MenuItem value="Budapest">
+                      other
+                    </MenuItem>
+                  </Field>
+                </Grid>
+                <Grid item xs={3}>
+                  <Field
+                    fullWidth
+                    name="Fiqa"
+                    component={Select}
+                    label="Fiqa"
+                    variant="outlined"
+                    formControlProps={{ fullWidth: true }}
+                  >
+                    <MenuItem value="male">male</MenuItem>
+                    <MenuItem value="female">Female</MenuItem>
+                    <MenuItem value="Budapest">
+                      other
+                    </MenuItem>
+                  </Field>
+                </Grid>
+                <Grid item xs={3}>
+                  <Field
+                    fullWidth
+
+                    name="Cast"
+                    component={TextField}
+                    type="text"
+                    label="Cast"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <h4>Requester Info</h4>
+                </Grid>
+                <Grid item xs={3}>
+                  <Field
+                    fullWidth
+
+                    name="Requestor Name"
+                    component={TextField}
+                    type="text"
+                    label="Requestor Name"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={3} style={{ paddingRight: '7%' }}>
+                  <Field
+                    fullWidth
+                    name="Relationship With patients"
+                    component={Select}
+                    label=" Relationship With patients"
+                    variant="outlined"
+                    formControlProps={{ fullWidth: true }}
+                  >
+                    <MenuItem value="male">male</MenuItem>
+                    <MenuItem value="female">Female</MenuItem>
+                    <MenuItem value="Budapest">
+                      other
+                    </MenuItem>
+                  </Field>
+                </Grid>
+                <Grid item xs={3}>
+                  <Field
+                    fullWidth
+
+                    name="KidsMale"
+                    component={TextField}
+                    type="text"
+                    label="No of a Kid(Male)"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <Field
+                    fullWidth
+
+                    name="Kidsfemale"
+                    component={TextField}
+                    type="text"
+                    label="No of a Kid(Female)"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <Field
+                    fullWidth
+
+                    name="Requestor phone number"
+                    component={TextField}
+                    type="text"
+                    label="Requestor phone number"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={3} style={{ paddingRight: '7%' }}>
+                  <Field
+                    fullWidth
+
+                    name="Gardian"
+                    component={TextField}
+                    type="text"
+                    label="Gardian"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <Field
+                    fullWidth
+
+                    name="other Kids"
+                    component={TextField}
+                    type="text"
+                    label="other Kids"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <Field
+                    fullWidth
+
+                    name="No of brothers"
+                    component={TextField}
+                    type="text"
+                    label="No of brothers"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <TextField
+                    id="outlined-uncontrolled"
+                    label="Monthly Income"
+                    defaultValue="0"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={3} style={{ paddingRight: '7%' }}>
+                  <Field
+                    fullWidth
+
+                    name="other Info"
+                    component={TextField}
+                    type="text"
+                    label="other Info"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <Field
+                    fullWidth
+
+                    name="No of sisters"
+                    component={TextField}
+                    type="text"
+                    label="No of sisters"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <Field
+                    fullWidth
+
+                    name="Family Member"
+                    component={TextField}
+                    type="text"
+                    label="Family Member"
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+
+
+
+                  <FormControl component="fieldset" >
+                    <FormLabel component="legend"></FormLabel>
+                    <FormGroup row>
+                      <Grid item >
+                        <FormControlLabel
+                          label="IS PAF EMPLOYEE"
+                          control={
+                            <Field
+                              name="IS PAF EMPLOYEE"
+                              component={Checkbox}
+                              type="checkbox"
+                              value="IS PAF EMPLOYEE"
+                            />
+
+                          }
+                        />
+                      </Grid>
+
+                      <Grid >
+                        <FormControlLabel
+                          label="IS STAFF"
+                          control={
+                            <Field
+                              name="IS STAFF"
+                              component={Checkbox}
+                              type="checkbox"
+                              value="IS STAFF"
+                            />
+                          }
+                        />
+                      </Grid>
+                      <Grid item >
+                        <FormControlLabel
+                          label="IS STAFF"
+                          control={
+                            <Field
+                              name="IS STAFF"
+                              component={Checkbox}
+                              type="checkbox"
+                              value="IS STAFF"
+                            />
+                          }
+                        />
+                      </Grid>
+                      <Grid item >
+                        <FormControlLabel
+                          label="IS STAFF"
+                          control={
+                            <Field
+                              name="IS STAFF"
+                              component={Checkbox}
+                              type="checkbox"
+                              value="IS STAFF"
+                            />
+                          }
+                        />
+
+                      </Grid>
+
+
+
+                    </FormGroup>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <h4>Details</h4>
+                </Grid>
+                <Grid item xs={12}>
+                  <div style={{ display: "inline" }}><h4>TABLE BANYGA AB</h4></div>
+                </Grid>
+                {/*    <Grid item >
                   <FormControl component="fieldset">
                     <FormLabel component="legend">Best Stooge</FormLabel>
                     <RadioGroup row>
@@ -260,27 +610,8 @@ export default function Services() {
                       A city with a very long Name
                     </MenuItem>
                   </Field>
-                </Grid>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <Grid item xs={6}>
-                    <Field
-                      name="rendez-vous"
-                      component={DatePickerWrapper}
-                      fullWidth
-                      margin="normal"
-                      label="Rendez-vous"
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Field
-                      name="alarm"
-                      component={TimePickerWrapper}
-                      fullWidth
-                      margin="normal"
-                      label="Alarm"
-                    />
-                  </Grid>
-                </MuiPickersUtilsProvider>
+                </Grid> */}
+
                 <Grid item style={{ marginTop: 16 }}>
                   <Button
                     type="button"
