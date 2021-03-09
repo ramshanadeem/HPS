@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 /* import ReactDOM from 'react-dom'; */
 import { Form, Field } from 'react-final-form';
 import { Checkbox, Radio, Select } from 'final-form-material-ui';
+import { tableIcons } from '../Icons/Icons';
 import {
   Typography,
   Paper,
@@ -27,6 +28,7 @@ import {
 import GlobalHeader from '../GlobalHeader';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import Materialtable from './Materialtable';
 const defaultProps = {
   bgcolor: 'background.paper',
   m: 1,
@@ -143,7 +145,7 @@ export default function Services({ next, back }) {
     CreateUser: "Admin",
     ModifyUser: "Admin",
   })
-
+  var newRowsArr = [];
   const handleSubmit = (e) => {
     //validate();
     e.preventDefault();
@@ -166,7 +168,91 @@ export default function Services({ next, back }) {
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
+  const [recID, setrecID] = useState('MR0000000012')
+  const [property, setProperty] = useState({
+    error: '',
+    open: false,
+    severity: '',
+    viewList: false,
+    editList: false,
+    newList: true,
+    loadingOnSave: false,
+    dialogOpen: false,
+    locationLookup: true,
+    BatchLookup: true,
+  })
+  const [loading, setLoading] = useState(false);
+  const [ItemTable, SetItemTable] = useState(
+    {
+      columns: [
+        {
+          title: 'Member Name', field: 'MemberName',
+          cellStyle: {
+            width: '25%'
+          },
+          render: (rowData) => (<input type="text" name="MemberName" />)
+        },
+        {
+          title: 'RelationWithPatient', field: 'RelationWithPatient',
+          cellStyle: {
+            width: '25%'
+          },
+          render: (rowData) => (<input type="text" name="RelationWithPatient" />)
+        },
+        {
+          title: 'Monthly Income', field: 'MonthlyIncome',
+          cellStyle: {
+            width: '25%'
+          },
+          render: (rowData) => (<input type="text" name="MonthlyIncome" />)
+        },
+      ], rows: []
+    });
 
+  const AddRow = () => {
+    console.log(ItemTable.rows);
+    let arr = ItemTable.rows
+    let check = arr.filter((data) => {
+      return data.MemberName === "" || data.RelationWithPatient === ""
+    })
+
+    if (check.length > 0) {
+      setProperty({
+        ...property,
+        msg: "Please Completely Fill Previous row",
+        severity: 'error',
+        open: true,
+      });
+    }
+    else {
+      // setProperty({ ...property, CurrencyLookup: true })
+      console.log('faaa');
+      let Item = {
+        MRNo: recID,
+        MemberName: "",
+        RelationWithPatient: "",
+        MonthlyIncome: ""
+      }
+
+      arr.push({ ...Item })
+      newRowsArr = arr
+      SetItemTable({ ...ItemTable, rows: arr })
+      console.log(ItemTable.rows);
+    }
+  }
+  const updateTableData = (e, rowData, prop) => {
+    let arr = newRowsArr;
+    let index = arr.indexOf(rowData)
+    arr[index][prop] = e
+    SetItemTable({ ...ItemTable, rows: arr })
+    newRowsArr = arr
+  }
+  const onClickDelete = (rowData) => {
+    let arr = ItemTable.rows
+    let index = arr.indexOf(rowData)
+    arr.splice(index, 1)
+    SetItemTable({ ...ItemTable, rows: arr })
+  }
 
   return (
     <div style={{ padding: 16, margin: 'auto' }}>
@@ -281,6 +367,8 @@ export default function Services({ next, back }) {
                     type="text"
                     label="Profession"
                     variant="outlined"
+                    value={Header.Profession}
+                    onChange={(e) => setHeader({ ...Header, Profession: e.target.value })}
                   />
                 </Grid>
                 <Grid item xs={3}>
@@ -291,6 +379,8 @@ export default function Services({ next, back }) {
                     label="Education"
                     variant="outlined"
                     formControlProps={{ fullWidth: true }}
+                    value={Header.Education}
+                    onChange={(e) => setHeader({ ...Header, Education: e.target.value })}
                   >
                     <MenuItem value="male">male</MenuItem>
                     <MenuItem value="female">Female</MenuItem>
@@ -307,6 +397,8 @@ export default function Services({ next, back }) {
                     label="Fiqa"
                     variant="outlined"
                     formControlProps={{ fullWidth: true }}
+                    value={Header.Fiqa}
+                    onChange={(e) => setHeader({ ...Header, Fiqa: e.target.value })}
                   >
                     <MenuItem value="male">male</MenuItem>
                     <MenuItem value="female">Female</MenuItem>
@@ -324,6 +416,8 @@ export default function Services({ next, back }) {
                     type="text"
                     label="Cast"
                     variant="outlined"
+                    value={Header.Cast}
+                    onChange={(e) => setHeader({ ...Header, Cast: e.target.value })}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -338,6 +432,8 @@ export default function Services({ next, back }) {
                     type="text"
                     label="Requestor Name"
                     variant="outlined"
+                    value={Header.ReqName}
+                    onChange={(e) => setHeader({ ...Header, ReqName: e.target.value })}
                   />
                 </Grid>
                 <Grid item xs={3} style={{ paddingRight: '7%' }}>
@@ -348,6 +444,8 @@ export default function Services({ next, back }) {
                     label=" Relationship With patients"
                     variant="outlined"
                     formControlProps={{ fullWidth: true }}
+                    value={Header.ReqRelationWithPatient}
+                    onChange={(e) => setHeader({ ...Header, ReqRelationWithPatient: e.target.value })}
                   >
                     <MenuItem value="male">male</MenuItem>
                     <MenuItem value="female">Female</MenuItem>
@@ -365,6 +463,8 @@ export default function Services({ next, back }) {
                     type="text"
                     label="No of a Kid(Male)"
                     variant="outlined"
+                    value={Header.MaleKids}
+                    onChange={(e) => setHeader({ ...Header, MaleKids: e.target.value })}
                   />
                 </Grid>
                 <Grid item xs={3}>
@@ -376,6 +476,8 @@ export default function Services({ next, back }) {
                     type="text"
                     label="No of a Kid(Female)"
                     variant="outlined"
+                    value={Header.FemaleKids}
+                    onChange={(e) => setHeader({ ...Header, FemaleKids: e.target.value })}
                   />
                 </Grid>
                 <Grid item xs={3}>
@@ -387,6 +489,8 @@ export default function Services({ next, back }) {
                     type="text"
                     label="Requestor phone number"
                     variant="outlined"
+                    value={Header.ReqPhone}
+                    onChange={(e) => setHeader({ ...Header, ReqPhone: e.target.value })}
                   />
                 </Grid>
                 <Grid item xs={3} style={{ paddingRight: '7%' }}>
@@ -398,6 +502,8 @@ export default function Services({ next, back }) {
                     type="text"
                     label="Gardian"
                     variant="outlined"
+                    value={Header.Guardian}
+                    onChange={(e) => setHeader({ ...Header, Guardian: e.target.value })}
                   />
                 </Grid>
                 <Grid item xs={3}>
@@ -409,6 +515,8 @@ export default function Services({ next, back }) {
                     type="text"
                     label="other Kids"
                     variant="outlined"
+                    value={Header.OtherKids}
+                    onChange={(e) => setHeader({ ...Header, OtherKids: e.target.value })}
                   />
                 </Grid>
                 <Grid item xs={3}>
@@ -420,6 +528,9 @@ export default function Services({ next, back }) {
                     type="text"
                     label="No of brothers"
                     variant="outlined"
+                    value={Header.Brothers}
+                    onChange={(e) => setHeader({ ...Header, Brothers: e.target.value })}
+
                   />
                 </Grid>
                 <Grid item xs={3}>
@@ -428,6 +539,8 @@ export default function Services({ next, back }) {
                     label="Monthly Income"
                     defaultValue="0"
                     variant="outlined"
+                    value={Header.MonthlyIncome}
+                    onChange={(e) => setHeader({ ...Header, MonthlyIncome: e.target.value })}
                   />
                 </Grid>
                 <Grid item xs={3} style={{ paddingRight: '7%' }}>
@@ -439,6 +552,8 @@ export default function Services({ next, back }) {
                     type="text"
                     label="other Info"
                     variant="outlined"
+                    value={Header.OtherInfo}
+                    onChange={(e) => setHeader({ ...Header, OtherInfo: e.target.value })}
                   />
                 </Grid>
                 <Grid item xs={3}>
@@ -450,6 +565,8 @@ export default function Services({ next, back }) {
                     type="text"
                     label="No of sisters"
                     variant="outlined"
+                    value={Header.Sisters}
+                    onChange={(e) => setHeader({ ...Header, Sisters: e.target.value })}
                   />
                 </Grid>
                 <Grid item xs={3}>
@@ -461,6 +578,8 @@ export default function Services({ next, back }) {
                     type="text"
                     label="Family Member"
                     variant="outlined"
+                    value={Header.NoOFFamilyMembers}
+                    onChange={(e) => setHeader({ ...Header, NoOFFamilyMembers: e.target.value })}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -472,13 +591,15 @@ export default function Services({ next, back }) {
                     <FormGroup row>
                       <Grid item >
                         <FormControlLabel
-                          label="IS PAF EMPLOYEE"
+                          label="Married"
                           control={
                             <Field
-                              name="IS PAF EMPLOYEE"
+                              name="IsMarried"
                               component={Checkbox}
                               type="checkbox"
-                              value="IS PAF EMPLOYEE"
+                              value="IsMarried"
+                              value={Header.IsMarried}
+                              onChange={(e) => setHeader({ ...Header, IsMarried: e.target.value })}
                             />
 
                           }
@@ -487,39 +608,45 @@ export default function Services({ next, back }) {
 
                       <Grid >
                         <FormControlLabel
-                          label="IS STAFF"
+                          label="Able To Pay"
                           control={
                             <Field
-                              name="IS STAFF"
+                              name="IsAbleToPay"
                               component={Checkbox}
                               type="checkbox"
-                              value="IS STAFF"
+                              value="IsAbleToPay"
+                              value={Header.ISSTAFF}
+                              onChange={(e) => setHeader({ ...Header, IsAbleToPay: e.target.value })}
                             />
                           }
                         />
                       </Grid>
                       <Grid item >
                         <FormControlLabel
-                          label="IS STAFF"
+                          label="Is Earning"
                           control={
                             <Field
-                              name="IS STAFF"
+                              name="IsEarning"
                               component={Checkbox}
                               type="checkbox"
-                              value="IS STAFF"
+                              value="IsEarning"
+                              value={Header.IsEarning}
+                              onChange={(e) => setHeader({ ...Header, IsEarning: e.target.value })}
                             />
                           }
                         />
                       </Grid>
                       <Grid item >
                         <FormControlLabel
-                          label="IS STAFF"
+                          label="HaveGold"
                           control={
                             <Field
-                              name="IS STAFF"
+                              name="HaveGold"
                               component={Checkbox}
                               type="checkbox"
-                              value="IS STAFF"
+                              value="HaveGold"
+                              value={Header.HaveGold}
+                              onChange={(e) => setHeader({ ...Header, HaveGold: e.target.value })}
                             />
                           }
                         />
@@ -535,7 +662,7 @@ export default function Services({ next, back }) {
                   <h4>Details</h4>
                 </Grid>
                 <Grid item xs={12}>
-                  <div style={{ display: "inline" }}><h4>TABLE BANYGA AB</h4></div>
+                  <Materialtable />
                 </Grid>
 
 
