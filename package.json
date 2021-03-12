@@ -1,0 +1,23 @@
+{
+  "name": "hps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"cd server && npm run dev\"  \"cd client && npm start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ramshanadeem/HPS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ramshanadeem/HPS/issues"
+  },
+  "homepage": "https://github.com/ramshanadeem/HPS#readme",
+  "dependencies": {
+    "concurrently": "^6.0.0"
+  }
+}

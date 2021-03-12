@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import ReactDOM from 'react-dom';
 import { Form, Field } from 'react-final-form';
 import { Checkbox, Radio, Select } from 'final-form-material-ui';
@@ -8,6 +8,8 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import Box from '@material-ui/core/Box';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import Popup from '../Popup';
+import axios from 'axios';
 import {
   Typography,
   Paper,
@@ -56,21 +58,11 @@ const useStyles = makeStyles((theme) => ({
 export default function Register({ next, back }) {
   const classes = useStyles();
   const [value, setValue] = React.useState('Controlled');
+  const [err, setErr] = useState('')
+  const [posts, setposts] = useState([]);
   const [options, setOptions] = useState(false)
   const [disableHelpType, setdisableHelpType] = React.useState(false)
-  const validate = values => {
-    const errors = {};
-    if (!value.TokenNo) {
-      errors.TokenNo = 'Required';
-    }
-    if (!value.lastName) {
-      errors.lastName = 'Required';
-    }
-    if (!value.email) {
-      errors.email = 'Required';
-    }
-    return errors;
-  };
+  const [open, setOpen] = useState(false)
   const handlereligion = (val) => {
     if (val != "Islam") {
       setdisableHelpType(true)
@@ -81,6 +73,7 @@ export default function Register({ next, back }) {
       setdisableHelpType(false)
     }
   }
+
   const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
   const [Header, setHeader] = useState({
     MRNo: "",
@@ -116,6 +109,92 @@ export default function Register({ next, back }) {
     CreateDate: "",
     ModifyDate: ""
   });
+  const validate = () => {
+    if (Header.TokenNo === '' || Header.TokenNo === undefined || Header.TokenNo === null) {
+      setErr('Token is missing')
+      setOpen(true)
+      return false;
+    }
+    else if (Header.RegistrationDate === '' || Header.RegistrationDate === undefined || Header.RegistrationDate === null) {
+      setErr('RegistrationDate is missing')
+      return false;
+    }
+    else if (Header.Name === '' || Header.Name === undefined || Header.Name === null) {
+      setErr('Name is missing')
+      return false;
+    }
+    else if (Header.FatherOrHusband === '' || Header.FatherOrHusband === undefined || Header.FatherOrHusband === null) {
+      setErr('FatherOrHusband is missing')
+      return false;
+    }
+    else if (Header.DOB === '' || Header.DOB === undefined || Header.DOB === null) {
+      setErr('Date of Birth is missing')
+      return false;
+    }
+    else if (Header.Age === '' || Header.Age === undefined || Header.Age === null) {
+      setErr('Age is missing')
+      return false;
+    }
+    else if (Header.Gender === '' || Header.Gender === undefined || Header.Gender === null) {
+      setErr('Gender is missing')
+      return false;
+    }
+    else if (Header.Religion === '' || Header.Religion === undefined || Header.Religion === null) {
+      setErr('Religion is missing')
+      return false;
+    }
+    else if (Header.IsZakat === '' || Header.IsZakat === undefined || Header.IsZakat === null) {
+      setErr('Zakaat is missing')
+      return false;
+    }
+    else if (Header.CNIC === '' || Header.CNIC === undefined || Header.CNIC === null) {
+      setErr('CNIC is missing')
+      return false;
+    }
+
+    else if (Header.HousNo === '' || Header.HousNo === undefined || Header.HousNo === null) {
+      setErr('House No is missing')
+      return false;
+    }
+    else if (Header.Address === '' || Header.Address === undefined || Header.Address === null) {
+      setErr('Address is missing')
+      return false;
+    }
+    else if (Header.Area === '' || Header.Area === undefined || Header.Area === null) {
+      setErr('Area is missing')
+      return false;
+    }
+    else if (Header.City === '' || Header.City === undefined || Header.City === null) {
+      setErr('Ciy is missing')
+      return false;
+    }
+
+    else if (Header.Mobile === '' || Header.Mobile === undefined || Header.Mobile === null) {
+      setErr('Mobile is missing')
+      return false;
+    }
+    else if (Header.EmpID === '' || Header.EmpID === undefined || Header.EmpID === null) {
+      setErr('Employee ID is missing')
+      return false;
+    }
+    else if (Header.NOY === '' || Header.Name === undefined || Header.Name === null) {
+      setErr('NOY is missing')
+      return false;
+    }
+    else if (Header.IsPAFEmp === '' || Header.IsPAFEmp === undefined || Header.IsPAFEmp === null) {
+      setErr('PAF Employee is missing')
+      return false;
+    }
+
+    else if (Header.IsRejected === '' || Header.IsRejected === undefined || Header.IsRejected === null) {
+      setErr('Rejection is missing')
+      return false;
+    }
+
+    else {
+      return true;
+    }
+  }
   /*   const [valid, setvalid] = useState()
     const validateI = (valid) => {
       if (valid != TokenNo) {
@@ -127,14 +206,16 @@ export default function Register({ next, back }) {
     } */
 
 
-  const handleSubmit = (e) => {
-    //validate();
+  const handleSubmit = async (e) => {
+    // validate();
     e.preventDefault();
     setHeader(e.target.value);
     //  validateI();
     //console.log("not" + err)
     console.log(Header);
     next();
+    const res = await axios.post("http://localhost:4000/api/Regusers", Header)
+    console.log(res);
 
   }
 
@@ -159,8 +240,18 @@ export default function Register({ next, back }) {
   /*   const handleChange = (event) => {
       setValue(event.target.value);
     }; */
+
+  /*  useEffect(() => {
+     axios.post("http://localhost:4000/api/Regusers", Header)
+       .then((res) => {
+         console.log(res.data);
+         setHeader(res.data.Header)
+       })
+       .catch((e) => console.log(e));
+   }, []); */
   return (
     <>
+      <Popup msg={err} open={open} handleClose={() => setOpen(false)} />
       <GlobalHeader forward={handleSubmit} back={back} title="Registeration" />
       <div style={{ padding: 16, margin: 'auto' }}>
 
@@ -170,6 +261,7 @@ export default function Register({ next, back }) {
       </Typography>
 
         <Form
+          action="http://localhost:4000/api/Regusers"
           onSubmit={handleSubmit}
           initialValues={{ employed: true, stooge: 'larry' }}
           validate={validate}

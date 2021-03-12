@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+/* const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -23,9 +23,9 @@ async function dbConnect() {
       process.exit(1);
     });
     mongoose.connection.on('error', function (err) {//any error
-    console.log("Mongoose connection error", err);
-    process.exit(1);
-});
+      console.log("Mongoose connection error", err);
+      process.exit(1);
+    });
   }
   catch (e) {
     console.log(e)
@@ -33,4 +33,22 @@ async function dbConnect() {
   }
 }
 module.exports = dbConnect
+
+const mongoose = require('mongoose');
+ */
+const mongoose = require('mongoose');
+
+async function dbconnect() {
+  const db = await mongoose.connect('mongodb+srv://Ramsha:rightsight@cluster0.qqo5l.mongodb.net/HOSPITAL?retryWrites=true&w=majority', {
+
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+  })
+  console.log('mongo db is connected')
+
+}
+
+module.exports = dbconnect
 
