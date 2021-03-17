@@ -20,6 +20,8 @@ app.listen(PORT, (req, res) => {
 app.get('/', (req, res) => {
     res.send('<h1>Server is running</h1>')
 })
+///Routes
+
 app.use('/api/Regusers', RegRoute)
 /*
 app.use('/api/users', userRoute)

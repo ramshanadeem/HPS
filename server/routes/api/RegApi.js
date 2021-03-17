@@ -15,18 +15,22 @@ const Regmodel = require("../../models/Regmodel.js");
     }
 }); */
 
-router.post('/', async (req, res) => {
+router.post('/add', async (req, res) => {
     // const {title, description, author} = req.body
     try {
         const Reguser = await Regmodel.create(req.body)
         console.log(Reguser)
         res.json({
+            success: true,
             status: 201,
             pid: Reguser._id
         })
 
     } catch (error) {
         res.json({
+            success: false,
+            status: 400,
+            error : error.message,
             status: 400,
             msg: 'Post is not created'
         })

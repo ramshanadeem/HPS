@@ -214,7 +214,7 @@ export default function Register({ next, back }) {
     //console.log("not" + err)
     console.log(Header);
     next();
-    const res = await axios.post("http://localhost:4000/api/Regusers", Header)
+    const res = await axios.post("http://localhost:4000/api/Regusers/add", Header)
     console.log(res);
 
   }
@@ -708,9 +708,10 @@ export default function Register({ next, back }) {
 
                   <Grid item style={{ marginTop: '16%' }}>
                     <Button
+                    onClick={handleSubmit}
                       type="button"
                       variant="contained"
-                      onClick={reset}
+                      // onClick={reset}
                       disabled={submitting || pristine}
                     >
                       Reset
