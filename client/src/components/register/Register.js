@@ -224,7 +224,14 @@ export default function Register({ next, back }) {
 
   }
 
+  useEffect(() => {
 
+    axios.get(`http://localhost:4000/api/register/`)
+      .then(res => {
+        console.log(res)
+        // setHeader()
+      })
+  }, [])
 
 
 
