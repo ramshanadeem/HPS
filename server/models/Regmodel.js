@@ -1,153 +1,109 @@
 const mongoose = require('mongoose');
 
 const regSchema = mongoose.Schema({
+    MRNo: "",
     TokenNo: {
-        type: Number,
-        required: [true, 'Token is missing']
+        type: String,
+        required: [true, "TokenNo is missing"]
     },
     RegistrationDate: {
         type: Date,
         default: new Date()
     },
-
     Name: {
         type: String,
-        required: [true, 'name is missing']
+        required: [true, "Name is missing"]
     },
     FatherOrHusband: {
         type: String,
-        required: [true, 'FatherOrHusband is missing']
+        required: [true, "FatherOrHusband is missing"]
     },
     DOB: {
         type: Date,
-        default: new Date(),
-        required: [true, 'DOB is missing']
+        required: [true, "DOB is missing"]
     },
     Age: {
         type: Number,
-        required: [true, 'Age is missing']
-
+        required: [true, "Age is missing"]
     },
-    Gender: {
-        type: String,
-        required: [true, 'Gender is missing']
-
-    },
+    Gender: "",
     Religion: {
         type: String,
-        required: [true, 'Religion is missing']
-
+        // required: [true, "Religion is missing"]
     },
     District: {
         type: String,
-        required: [true, 'District is missing']
-
+        required: [true, "District is missing"]
     },
-
     City: {
         type: String,
-        required: [true, 'City is missing']
-
+        required: [true, "City is missing"]
     },
-
     Area: {
         type: String,
-        required: [true, 'Area is missing']
-
+        required: [true, "Area is missing"]
     },
     HousNo: {
         type: String,
-        required: [true, 'HousNo is missing']
-
+        required: [true, "HouseNo is missing"]
     },
     Address: {
         type: String,
-        required: [true, 'Address is missing']
-
+        required: [true, "Adddress is missing"]
     },
     CNIC: {
         type: Number,
-        required: [true, 'CNIC is missing']
-
+        required: [true, "CNIC is missing"]
     },
     Phone: {
         type: Number,
-        required: [true, 'Phone is missing']
-
+        required: [true, "Phone is missing"]
     },
     OffPhone: {
         type: Number,
-        required: [true, 'OffPhone is missing']
-
+        required: [true, "OffPhone is missing"]
+    },
+    Mobile: {
+        type: Number,
+        required: [true, "Mobile is missing"]
     },
     RefBy: {
-        type: Number,
-        required: [true, 'RefBy is missing']
-
+        type: String,
+        required: [true, "Ref is missing"]
     },
     Remarks: {
         type: String,
-        required: [true, 'Remarks is missing']
-
+        required: [true, "Remarks is missing"]
+    },
+    IsRejected: {
+        type: Boolean,
+        // required: [true, "IsRejected is missing"]
     },
     IsZakat: {
-        type: String,
-        required: [true, 'IsZakat is missing']
-
+        type: Boolean,
+        // required: [true, "IsRejected is missing"]
     },
     IsPAFEmp: {
-        type: String,
-        required: [true, 'IsPAFEmp is missing']
-
+        type: Boolean,
+        required: [true, "IsPAFEmp is missing"]
     },
     MonthlyConsLimit: {
         type: Number,
-        required: [true, 'MonthlyConsLimit is missing']
-
-    },
-    ThumbImage: {
-        type: String,
-        required: [true, 'ThumbImage is missing']
-
+        required: [true, "MonthlyConsLimit is missing"]
     },
     NOY: {
-        type: String,
-        required: [true, 'NOY is missing']
-
+        type: Number,
+        required: [true, "NOY is missing"]
     },
     EmpID: {
         type: Number,
-        required: [true, 'EmpID is missing']
-
+        required: [true, "EmpID is missing"]
     },
     IsStaff: {
-        type: Number,
-        required: [true, 'IsStaff is missing']
-
-    },
-    CreateUser: {
-        type: String,
-        required: [true, 'CreateUser is missing']
-
-    },
-    ModifyUser: {
-        type: String,
-        required: [true, 'ModifyUser is missing']
-
-    },
-    IsStaff: {
-        type: Number,
-        required: [true, 'IsStaff is missing']
-
-    },
-    CreateDate: {
-        type: Date,
-        default: new Date()
-    },
-    ModifyDate: {
-        type: Date,
-        default: new Date()
+        type: Boolean,
+        required: [true, "IsStaff is missing"]
     }
+
 })
 
 const Regmodel = mongoose.model('Regmodel', regSchema)

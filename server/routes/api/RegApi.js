@@ -17,9 +17,10 @@ const Regmodel = require("../../models/Regmodel.js");
 
 router.post('/add', async (req, res) => {
     // const {title, description, author} = req.body
+    console.log(req.body)
     try {
         const Reguser = await Regmodel.create(req.body)
-        console.log(Reguser)
+
         res.json({
             success: true,
             status: 201,
@@ -30,7 +31,7 @@ router.post('/add', async (req, res) => {
         res.json({
             success: false,
             status: 400,
-            error : error.message,
+            error: error.message,
             status: 400,
             msg: 'Post is not created'
         })

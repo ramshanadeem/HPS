@@ -61,16 +61,21 @@ export default function Register({ next, back }) {
   const [err, setErr] = useState('')
   const [posts, setposts] = useState([]);
   const [options, setOptions] = useState(false)
-  const [disableHelpType, setdisableHelpType] = React.useState(false)
+  const [disableHelpType, setdisableHelpType] = React.useState('block')
   const [open, setOpen] = useState(false)
-  const handlereligion = (val) => {
-    if (val != "Islam") {
-      setdisableHelpType(true)
-
-
-    }
-    else {
-      setdisableHelpType(false)
+  /*   const handlereligion = (val) => {
+      if (val != "Islam") {
+        setdisableHelpType(true)
+  
+  
+      }
+      else {
+        setdisableHelpType(false)
+      }
+    } */
+  const handleOption = (val) => {
+    if (val !== 'islam') {
+      setdisableHelpType('none')
     }
   }
 
@@ -226,14 +231,14 @@ export default function Register({ next, back }) {
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
-  const handleOption = (val) => {
+  /* const handleOption = (val) => {
     if (val != 'islam') {
       setOptions(true)
     }
     else {
       setOptions(false)
     }
-  }
+  } */
 
 
 
@@ -261,7 +266,7 @@ export default function Register({ next, back }) {
       </Typography>
 
         <Form
-          action="http://localhost:4000/api/Regusers"
+          action="http://localhost:4000/api/Regusers/add"
           onSubmit={handleSubmit}
           initialValues={{ employed: true, stooge: 'larry' }}
           validate={validate}
@@ -415,17 +420,18 @@ export default function Register({ next, back }) {
                       value={Header.Religion}
                       formControlProps={{ fullWidth: true }}
 
-                      onClick={(e) => handlereligion(e.target.value)}
+                      value={Header.Religion}
                       onChange={(e) => {
-                        // handleOption(e.target.value)
+                        handleOption(e.target.value)
                         setHeader({ ...Header, Religion: e.target.value })
                       }
 
                       }
                       disabled={options}
                     >
-                      <MenuItem value="male">Islam</MenuItem>
-                      <MenuItem value="female">Other</MenuItem>
+                      <MenuItem value="islam">Islam</MenuItem>
+                      <MenuItem value="christian">Christian</MenuItem>
+                      <MenuItem value="other">Other</MenuItem>
 
                     </Field>
                   </Grid>
@@ -442,9 +448,9 @@ export default function Register({ next, back }) {
                               component={Radio}
                               type="radio"
                               value="help1"
-                              value={Header.IsZakat}
-                              disabled={disableHelpType}
-                              onChange={(e) => setHeader({ ...Header, IsZakat: e.target.value })}
+                              // value={Header.IsZakat}
+                              display={disableHelpType}
+                              onChange={(e) => console.log(e.target.value)}
                             />
 
                           }
@@ -457,9 +463,10 @@ export default function Register({ next, back }) {
                               name="help"
                               component={Radio}
                               type="radio"
+
                               value="help"
-                              value={Header.IsRejected}
-                              onChange={(e) => setHeader({ ...Header, IsRejected: e.target.value })}
+                              //  value={Header.IsRejected}
+                              onChange={(e) => console.log(e.target.value)}
                             />
                           }
                         />
@@ -614,7 +621,7 @@ export default function Register({ next, back }) {
                     label="Employee Id"
                     variant="outlined"
                     value={Header.IsPAFEmp}
-                    onChange={(e) => setHeader({ ...Header, IsPAFEmp: e.target.value })}
+                    onChange={(e) => setHeader({ ...Header, EmpID: e.target.value })}
                   /></Grid>
                   <Grid item xs={3} > <Field
 
@@ -624,8 +631,8 @@ export default function Register({ next, back }) {
                     type="text"
                     label="NDY"
                     variant="outlined"
-                    value={Header.NDY}
-                    onChange={(e) => setHeader({ ...Header, NDY: e.target.value })}
+                    value={Header.NOY}
+                    onChange={(e) => setHeader({ ...Header, NOY: e.target.value })}
                   /></Grid>
                   <Grid item xs={5} > <Field
 
@@ -657,7 +664,7 @@ export default function Register({ next, back }) {
                                 component={Checkbox}
                                 type="checkbox"
                                 value={Header.IsPAFEmp}
-                                onChange={(e) => setHeader({ ...Header, IsPAFEmp: e.target.value })}
+                                onChange={(e) => setHeader({ ...Header, IsPAFEmp: !Header.IsPAFEmp })}
 
                               />
 
@@ -673,7 +680,7 @@ export default function Register({ next, back }) {
                                 component={Checkbox}
                                 type="checkbox"
                                 value={Header.IsStaff}
-                                onChange={(e) => setHeader({ ...Header, IsStaff: e.target.value })}
+                                onChange={(e) => setHeader({ ...Header, IsStaff: !Header.IsStaff })}
                                 //onChange={e => setHeader({ ...Header, IsStaff: !Header.IsStaff })}
                                 label="Is Staff"
                               />
@@ -708,7 +715,7 @@ export default function Register({ next, back }) {
 
                   <Grid item style={{ marginTop: '16%' }}>
                     <Button
-                    onClick={handleSubmit}
+                      onClick={handleSubmit}
                       type="button"
                       variant="contained"
                       // onClick={reset}
