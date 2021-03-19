@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 /* import ReactDOM from 'react-dom'; */
 import { Form, Field } from 'react-final-form';
 import { Checkbox, Radio, Select } from 'final-form-material-ui';
 import { tableIcons } from '../Icons/Icons';
+import axios from 'axios';
 import {
   Typography,
   Paper,
@@ -146,15 +147,34 @@ export default function Services({ next, back }) {
     ModifyUser: "Admin",
   })
   var newRowsArr = [];
-  const handleSubmit = (e) => {
-    //validate();
+  const handleSubmit = async (e) => {
+
+    /*  e.preventDefault();
+     setHeader(e.target.value);
+ 
+     console.log(Header);
+     next();
+     const res = await axios.post("http://localhost:4000/api/Welfareuser/add", Header)
+     console.log(res); */
     e.preventDefault();
     setHeader(e.target.value);
-    console.log(err)
+
     console.log(Header);
     next();
+    const res = await axios.post("http://localhost:4000/api/Welfareuser/add", Header)
+    console.log(res);
+
   }
-  const [err, setErr] = useState('')
+  useEffect(() => {
+
+    axios.get("http://localhost:4000/api/Welfareuser")
+      .then(res => {
+        console.log("bdj")
+        console.log(res.data)
+
+      })
+  }, [])
+
 
 
   /* const handleClickShowPassword = () => {
@@ -263,6 +283,7 @@ export default function Services({ next, back }) {
         🏁 Welfare
       </Typography>
       <Form
+        action="http://localhost:4000/api/Welfareuser/add"
         onSubmit={handleSubmit}
         initialValues={{ employed: true, stooge: 'larry' }}
         validate={validate}
@@ -382,10 +403,10 @@ export default function Services({ next, back }) {
                     value={Header.Education}
                     onChange={(e) => setHeader({ ...Header, Education: e.target.value })}
                   >
-                    <MenuItem value="male">male</MenuItem>
-                    <MenuItem value="female">Female</MenuItem>
+                    <MenuItem value="male">bs</MenuItem>
+                    <MenuItem value="female">cs</MenuItem>
                     <MenuItem value="Budapest">
-                      other
+                      ms
                     </MenuItem>
                   </Field>
                 </Grid>
@@ -400,8 +421,8 @@ export default function Services({ next, back }) {
                     value={Header.Fiqa}
                     onChange={(e) => setHeader({ ...Header, Fiqa: e.target.value })}
                   >
-                    <MenuItem value="male">male</MenuItem>
-                    <MenuItem value="female">Female</MenuItem>
+                    <MenuItem value="male">a</MenuItem>
+                    <MenuItem value="female">b</MenuItem>
                     <MenuItem value="Budapest">
                       other
                     </MenuItem>

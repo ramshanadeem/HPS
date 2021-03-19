@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const Regmodel = require("../../models/Regmodel.js");
+const Welfaremodel = require("../../models/Welfaremodel.js");
 
 
 
@@ -9,12 +9,12 @@ router.post('/add', async (req, res) => {
 
     console.log(req.body)
     try {
-        const Reguser = await Regmodel.create(req.body)
+        const Welfareuser = await Welfaremodel.create(req.body)
 
         res.json({
             success: true,
             status: 201,
-            pid: Reguser._id
+            pid: Welfareuser._id
         })
 
     } catch (error) {
@@ -31,7 +31,7 @@ router.post('/add', async (req, res) => {
 });
 router.get('/', async (req, res) => {
     // get posts from posts
-    const posts = await Regmodel.find();
+    const posts = await Welfaremodel.find();
     console.log(posts)
     res.json({
         success: true,

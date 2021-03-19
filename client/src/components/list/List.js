@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import axios from 'axios';
 import ReactDOM from 'react-dom'
 import MaterialTable from 'material-table'
 import { Dialog } from '@material-ui/core';
@@ -8,6 +9,19 @@ import AddIcon from '@material-ui/icons/Add';
 const List = () => {
     const [open, setOpen] = React.useState(false);
 
+    const [data, setData] = React.useState([])
+    const [columns, setColumns] = React.useState([
+        /*  { title: 'Adı', field: 'name' },
+         { title: 'Soyadı', field: 'surname' },
+         { title: 'Doğum Yılı', field: 'birthYear', type: 'numeric' },
+         { title: 'Doğum Yeri', field: 'birthCity', lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' } } */
+        { title: 'TokenNo', field: 'TokenNo' },
+        { title: 'Registeration Date', field: 'RegistrationDate' },
+        { title: 'MR No', field: 'MRNo' },
+        { title: 'Patient Name', field: 'Name', },
+        { title: 'Ref By', field: 'RefBy' },
+        { title: 'Age', field: 'Age', type: 'numeric' }
+    ]);
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -15,15 +29,17 @@ const List = () => {
     const handleClose = () => {
         setOpen(false);
     };
-    const [columns, setColumns] = React.useState([
-        { title: 'Adı', field: 'name' },
-        { title: 'Soyadı', field: 'surname' },
-        { title: 'Doğum Yılı', field: 'birthYear', type: 'numeric' },
-        { title: 'Doğum Yeri', field: 'birthCity', lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' } }
-    ]);
-    const [data, setData] = React.useState([
-        { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 }
-    ])
+
+    useEffect(() => {
+        axios.get('http://localhost:4000/api/Regusers/')
+            .then((res) => {
+                console.log("bdj")
+                console.log(res.data);
+                setData(res.data.data);
+            })
+            .catch((e) => console.log(e));
+    }, []);
+
     return (
         <div style={{ maxWidth: '90%', margin: 'auto' }}>
             <FormDialog open={open} onClose={handleClose} />
@@ -54,7 +70,6 @@ const List = () => {
                     onBulkUpdate: changes =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {
-                                /* setData([...data, newData]); */
 
                                 resolve();
                             }, 1000);
@@ -64,7 +79,6 @@ const List = () => {
                     onRowAdd: newData =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {
-                                /* setData([...data, newData]); */
 
                                 resolve();
                             }, 1000);

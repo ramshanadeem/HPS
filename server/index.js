@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const bodyparser = require('body-parser')
 const RegRoute = require('./routes/api/RegApi.js')
+const WelfareRoute = require('./routes/api/WelfareApi.js')
 // const postRoute = require('./routes/api/posts.js')
 const dbconnect = require('./config/db.js')
 
@@ -23,6 +24,4 @@ app.get('/', (req, res) => {
 ///Routes
 
 app.use('/api/Regusers', RegRoute)
-/*
-app.use('/api/users', userRoute)
-app.use('/api/posts', postRoute) */
+app.use('/api/Welfareuser', WelfareRoute)

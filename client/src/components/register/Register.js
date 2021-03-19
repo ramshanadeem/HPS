@@ -200,23 +200,13 @@ export default function Register({ next, back }) {
       return true;
     }
   }
-  /*   const [valid, setvalid] = useState()
-    const validateI = (valid) => {
-      if (valid != TokenNo) {
-        setvalid(console.log("er"))
-      }
-      else {
-        setvalid("true")
-      }
-    } */
 
 
   const handleSubmit = async (e) => {
-    // validate();
+
     e.preventDefault();
     setHeader(e.target.value);
-    //  validateI();
-    //console.log("not" + err)
+
     console.log(Header);
     next();
     const res = await axios.post("http://localhost:4000/api/Regusers/add", Header)
@@ -226,26 +216,27 @@ export default function Register({ next, back }) {
 
   useEffect(() => {
 
-    axios.get(`http://localhost:4000/api/register/`)
+    axios.get("http://localhost:4000/api/Regusers")
       .then(res => {
-        console.log(res)
-        // setHeader()
+        console.log("bdj")
+        console.log(res.data)
+
       })
   }, [])
-
-
+  /*  useEffect(() => {
+     axios.get('http://localhost:4000/api/users/')
+       .then((res) => {
+         console.log(res.data);
+         setstate(res.data.data);
+       })
+       .catch((e) => console.log(e));
+   }, []);
+  */
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
-  /* const handleOption = (val) => {
-    if (val != 'islam') {
-      setOptions(true)
-    }
-    else {
-      setOptions(false)
-    }
-  } */
+
 
 
 
