@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect} from 'react';
 /* import ReactDOM from 'react-dom'; */
 import { Form, Field } from 'react-final-form';
 import { Checkbox, Radio, Select } from 'final-form-material-ui';
+import axios from 'axios';
 import {
   Typography,
   Paper,
@@ -126,15 +127,26 @@ export default function Services({ next, back }) {
     CreatedUser: "Admin",
     ModifyUser: "Admin"
   })
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     //validate();
     e.preventDefault();
     setHeader(e.target.value);
-    console.log(err)
-    console.log(Header);
     next();
+    const res = await axios.post("http://localhost:4000/api/Serviceuser/add", Header)
+    console.log(res);
   }
-  const [err, setErr] = useState('')
+  useEffect(() => {
+
+    axios.get("http://localhost:4000/api/Serviceuser")
+      .then(res => {
+        console.log("bdj")
+        console.log(res.data)
+
+      })
+  }, [])
+
+
+ 
 
 
   /*   const handleChange = (prop) => (event) => {
@@ -163,6 +175,7 @@ export default function Services({ next, back }) {
         🏁 Services
       </Typography>
       <Form
+       action="http://localhost:4000/api/Serviceuser/add"
         onSubmit={handleSubmit}
         initialValues={{ employed: true, stooge: 'larry' }}
         validate={validate}
@@ -256,6 +269,8 @@ export default function Services({ next, back }) {
                     type="text"
                     label="Amount"
                     variant="outlined"
+                    value={Header.Amount}
+                    onChange={(e) => setHeader({ ...Header, Amount: e.target.value })}
                   />
                 </Grid>
 
@@ -268,6 +283,8 @@ export default function Services({ next, back }) {
                     type="text"
                     label="Total Amount"
                     variant="outlined"
+                    value={Header.TotalAmount}
+                    onChange={(e) => setHeader({ ...Header, TotalAmount: e.target.value })}
                   />
                 </Grid>
                 <Grid item xs={3}>
@@ -279,6 +296,8 @@ export default function Services({ next, back }) {
                     type="text"
                     label="Patient Contribution"
                     variant="outlined"
+                    value={Header.PatientContribution}
+                    onChange={(e) => setHeader({ ...Header, PatientContribution: e.target.value })}
                   />
                 </Grid>
                 <Grid item xs={3}>
@@ -290,15 +309,17 @@ export default function Services({ next, back }) {
                     type="text"
                     label="Remark"
                     variant="outlined"
+                    value={Header.Remarks}
+                    onChange={(e) => setHeader({ ...Header, Remarks: e.target.value })}
                   />
                 </Grid>
 
                 <Grid item xs={12}>
                   <h4>Details</h4>
                 </Grid>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                   <div style={{ display: "inline" }}><h4>TABLE BANYGA AB</h4></div>
-                </Grid>
+                </Grid> */}
 
 
                 <Grid item style={{ marginTop: 16 }}>

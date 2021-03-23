@@ -11,16 +11,14 @@ const List = () => {
 
     const [data, setData] = React.useState([])
     const [columns, setColumns] = React.useState([
-        /*  { title: 'Adı', field: 'name' },
-         { title: 'Soyadı', field: 'surname' },
-         { title: 'Doğum Yılı', field: 'birthYear', type: 'numeric' },
-         { title: 'Doğum Yeri', field: 'birthCity', lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' } } */
+    
         { title: 'TokenNo', field: 'TokenNo' },
         { title: 'Registeration Date', field: 'RegistrationDate' },
         { title: 'MR No', field: 'MRNo' },
         { title: 'Patient Name', field: 'Name', },
         { title: 'Ref By', field: 'RefBy' },
-        { title: 'Age', field: 'Age', type: 'numeric' }
+        { title: 'Age', field: 'Age', type: 'numeric' },
+        { title: 'Cast', field: 'Cast', type: 'String' }
     ]);
     const handleClickOpen = () => {
         setOpen(true);
@@ -39,6 +37,24 @@ const List = () => {
             })
             .catch((e) => console.log(e));
     }, []);
+    const handleDelete = (id) => {
+        axios.delete(`http://localhost:4000/api/Regusers/${data[id]._id}`)
+        .then(
+            (res) => {
+              console.log('Post was deleted successfully', res);
+              
+            })
+          .catch((err) => console.log(err));
+    }
+const handleUpdate = (id) => {
+        axios.put(`http://localhost:4000/api/Regusers/${data[id]._id}`)
+        .then(
+            (res) => {
+              console.log('Post was update successfully', res);
+              
+            })
+          .catch((err) => console.log(err));
+    } 
 
     return (
         <div style={{ maxWidth: '90%', margin: 'auto' }}>
@@ -63,7 +79,7 @@ const List = () => {
                 ]}  // {
 
                 editable={{
-                    isEditable: rowData => rowData.name === 'a', // only name(a) rows would be editable
+                  /*   isEditable: rowData => rowData.name === 'a', // only name(a) rows would be editable
                     isEditHidden: rowData => rowData.name === 'x',
                     isDeletable: rowData => rowData.name === 'b', // only name(b) rows would be deletable,
                     isDeleteHidden: rowData => rowData.name === 'y',
@@ -82,26 +98,27 @@ const List = () => {
 
                                 resolve();
                             }, 1000);
-                        }),
-                    onRowUpdate: (newData, oldData) =>
+                        }), */
+                 onRowUpdate: (newData, oldData) =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {
                                 const dataUpdate = [...data];
                                 const index = oldData.tableData.id;
                                 dataUpdate[index] = newData;
                                 setData([...dataUpdate]);
+                                handleUpdate(oldData.tableData.id)
 
                                 resolve();
                             }, 1000);
-                        }),
-                    onRowDelete: oldData =>
+                        }), 
+                        onRowDelete: oldData =>
                         new Promise((resolve, reject) => {
                             setTimeout(() => {
                                 const dataDelete = [...data];
                                 const index = oldData.tableData.id;
                                 dataDelete.splice(index, 1);
                                 setData([...dataDelete]);
-
+                                handleDelete(oldData.tableData.id)
                                 resolve();
                             }, 1000);
                         })
