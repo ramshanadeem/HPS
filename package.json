@@ -18,6 +18,10 @@
   },
   "homepage": "https://github.com/ramshanadeem/HPS#readme",
   "dependencies": {
-    "concurrently": "^6.0.0"
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
+    "concurrently": "^6.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "react-bootstrap": "^1.5.2"
   }
 }

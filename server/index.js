@@ -3,8 +3,10 @@ const cors = require('cors')
 const bodyparser = require('body-parser')
 const RegRoute = require('./routes/api/RegApi.js')
 const WelfareRoute = require('./routes/api/WelfareApi.js')
-const ServiceRoute=require('./routes/api/ServiceApi')
-// const postRoute = require('./routes/api/posts.js')
+const ServiceRoute = require('./routes/api/ServiceApi.js')
+const userRoute = require('./routes/api/User.js')
+const RegistrationRoute = require('./routes/api/Rgistration')
+
 const dbconnect = require('./config/db.js')
 
 const app = express();
@@ -27,3 +29,6 @@ app.get('/', (req, res) => {
 app.use('/api/Regusers', RegRoute)
 app.use('/api/Welfareuser', WelfareRoute)
 app.use('/api/Serviceuser', ServiceRoute)
+app.use('/api/users', userRoute)
+app.use('/api/Registration', RegistrationRoute)
+app.use('/api/users/login', userRoute)
